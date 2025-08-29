@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>My Skills</h2>
+    <a class="btn btn-success" href="{% url 'skills:create' %}">Add Skill</a>
+  </div>
+  <div class="list-group">
+    {% for s in skills %}
+      <a href="{% url 'skills:detail' s.id %}" class="list-group-item list-group-item-action">
+        <strong>{{ s.name }}</strong> — {{ s.level }}
+      </a>
+    {% empty %}
+      <div class="alert alert-warning">No skills yet.</div>
+    {% endfor %}
+  </div>
+{% endblock %}

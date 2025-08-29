@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="mb-4">
+    <h2>{{ skill.name }} ({{ skill.level }})</h2>
+    <p>Started: {{ skill.started_at|default:'-' }}</p>
+    <a class="btn btn-warning" href="{% url 'skills:edit' skill.id %}">Edit skill</a>
+  </div>
+
+  <h3>Progress</h3>
+  <form method="post" action="{% url 'skills:progress_add' skill.id %}" class="row g-3 mb-3">
+    {% csrf_token %}
+    <div class="col-md-2">
+      <input type="number" name="percent" class="form-control" placeholder="%" min="0" max="100" required>
+    </div>
+    <div class="col-md-6">
+      <input type="text" name="note" class="form-control" placeholder="Note">
+    </div>
+    <div class="col-md-2">
+      <button type="submit" class="btn btn-primary">Add</button>
+    </div>
+  </form>
+  <ul class="list-group mb-4">
+    {% for p in skill.progress_logs.all %}
+      <li class="list-group-item">{{ p.created_at|date:"Y-m-d H:i" }} — {{ p.percent }}% — {{ p.note }}</li>
+    {% empty %}
+      <li class="list-group-item">No progress yet.</li>
+    {% endfor %}
+  </ul>
+
+  <h3>Goals</h3>
+  <a class="btn btn-success mb-2" href="{% url 'goals:create' skill.id %}">Add goal</a>
+  <ul class="list-group mb-4">
+    {% for g in skill.goals.all %}
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <span><strong>{{ g.title }}</strong> — {{ g.status }} {% if g.due_date %}(due {{ g.due_date }}){% endif %}</span>
+        <a class="btn btn-sm btn-outline-primary" href="{% url 'goals:edit' g.id %}">Edit</a>
+      </li>
+    {% empty %}
+      <li class="list-group-item">No goals yet.</li>
+    {% endfor %}
+  </ul>
+
+  <h3>Achievements</h3>
+  <a class="btn btn-success mb-2" href="{% url 'achievements:create' skill.id %}">Add achievement</a>
+  <ul class="list-group">
+    {% for a in skill.achievements.all %}
+      <li class="list-group-item">
+        <strong>{{ a.title }}</strong> — {{ a.description|default:"" }}
+        {% if a.file %}
+          <a href="{{ a.file.url }}" class="btn btn-sm btn-outline-secondary ms-2">Download</a>
+        {% endif %}
+      </li>
+    {% empty %}
+      <li class="list-group-item">No achievements yet.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}
