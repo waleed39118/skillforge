@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h2>{{ form.instance.pk|yesno:"Edit Skill,Create Skill" }}</h2>
+  <form method="post" class="card card-body">
+    {% csrf_token %}
+    <div class="mb-3">{{ form.name.label_tag }} {{ form.name|add_class:"form-control" }}</div>
+    <div class="mb-3">{{ form.level.label_tag }} {{ form.level|add_class:"form-select" }}</div>
+    <div class="mb-3">{{ form.started_at.label_tag }} {{ form.started_at|add_class:"form-control" }}</div>
+    <button class="btn btn-primary" type="submit">Save</button>
+  </form>
+{% endblock %}
+

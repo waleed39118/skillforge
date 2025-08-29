@@ -4,20 +4,20 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'dev-secret-key-change-in-production'
+
 DEBUG = True
+
 ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
+    'accounts.apps.AccountsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
     'rest_framework',
-
-    'accounts',
     'skills',
     'goals',
     'achievements',
@@ -53,14 +53,14 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-# Use SQLite for quick start; switch to PostgreSQL later
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-# PostgreSQL example:
+
+# Example PostgreSQL configuration:
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql',
@@ -80,8 +80,11 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 LANGUAGE_CODE = 'en-us'
+
 TIME_ZONE = 'Asia/Bahrain'
+
 USE_I18N = True
+
 USE_TZ = True
 
 STATIC_URL = '/static/'
@@ -93,7 +96,8 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL = 'accounts.CustomUser'
+# Removed AUTH_USER_MODEL to use Django's default User model
+# AUTH_USER_MODEL = 'accounts.CustomUser'
 
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'dashboard'
@@ -107,4 +111,6 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 20,
 }

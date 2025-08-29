@@ -1,0 +1,3 @@
+body { padding-bottom: 40px; }
+.btn + .btn { margin-left: .5rem; }
+.list-group-item strong { margin-right: .25rem; }

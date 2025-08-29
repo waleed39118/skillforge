@@ -26,7 +26,8 @@ class SkillDetailView(LoginRequiredMixin, DetailView):
     context_object_name = 'skill'
 
     def get_queryset(self):
-        return Skill.objects.filter(user=self.request.user)
+        return Skill.objects.filter(user=self.request.user) .prefetch_related('progress_logs', 'goals', 'achievements')
+
 
 class SkillCreateView(LoginRequiredMixin, CreateView):
     model = Skill

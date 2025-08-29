@@ -1,8 +1,7 @@
 from django.db import models
 from django.conf import settings
-from django.contrib.auth.models import User
+from django.core.validators import MinValueValidator, MaxValueValidator
 
-# Create your models here.
 class Skill(models.Model):
     LEVEL_CHOICES = [
         ('BEGINNER', 'Beginner'),
@@ -24,7 +23,10 @@ class Skill(models.Model):
 
 class SkillProgress(models.Model):
     skill = models.ForeignKey(Skill, on_delete=models.CASCADE, related_name='progress_logs')
-    percent = models.PositiveIntegerField(default=0)
+    percent = models.PositiveIntegerField(
+        default=0,
+        validators=[MinValueValidator(0), MaxValueValidator(100)]
+    )
     note = models.CharField(max_length=255, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 

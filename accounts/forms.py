@@ -2,6 +2,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from .models import Profile
+from django.core.exceptions import ValidationError
 
 class SignUpForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)
@@ -16,6 +17,13 @@ class SignUpForm(forms.ModelForm):
         if cleaned.get('password') != cleaned.get('confirm_password'):
             self.add_error('confirm_password', 'Passwords do not match.')
         return cleaned
+    
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if email and User.objects.filter(email__iexact=email).exists():
+            raise ValidationError('Email is already in use.')
+        return email
+
 
 class ProfileForm(forms.ModelForm):
     class Meta:
