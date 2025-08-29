@@ -3,11 +3,14 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 from .models import Profile
 
-# Register the default User model with the built-in UserAdmin
-admin.site.unregister(User)  # Optional: only if User is already registered
+# Optional: re-register User with UserAdmin if needed
+try:
+    admin.site.unregister(User)
+except admin.sites.NotRegistered:
+    pass
 admin.site.register(User, UserAdmin)
 
-# Register the Profile model
+
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
     list_display = ('user', 'bio')

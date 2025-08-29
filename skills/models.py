@@ -1,6 +1,7 @@
 from django.db import models
-from django.conf import settings
+from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
+
 
 class Skill(models.Model):
     LEVEL_CHOICES = [
@@ -8,7 +9,7 @@ class Skill(models.Model):
         ('INTERMEDIATE', 'Intermediate'),
         ('ADVANCED', 'Advanced'),
     ]
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='skills')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='skills')
     name = models.CharField(max_length=120)
     level = models.CharField(max_length=13, choices=LEVEL_CHOICES, default='BEGINNER')
     started_at = models.DateField(null=True, blank=True)
@@ -20,6 +21,7 @@ class Skill(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.user.username})"
+
 
 class SkillProgress(models.Model):
     skill = models.ForeignKey(Skill, on_delete=models.CASCADE, related_name='progress_logs')

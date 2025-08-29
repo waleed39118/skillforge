@@ -1,9 +1,13 @@
 from django.db import models
+from django.utils.text import slugify
 from skills.models import Skill
 
-# Create your models here.
+
 def achievement_upload_to(instance, filename):
-    return f"achievements/{instance.skill.user.username}/{instance.skill.name}/{filename}"
+    uname = slugify(instance.skill.user.username)
+    sname = slugify(instance.skill.name)
+    return f"achievements/{uname}/{sname}/{filename}"
+
 
 class Achievement(models.Model):
     skill = models.ForeignKey(Skill, on_delete=models.CASCADE, related_name='achievements')
